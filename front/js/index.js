@@ -1,7 +1,7 @@
 fetch("http://localhost:3000/api/products")
     .then(res => res.json())
 
-    // Dispatcher les données de chaque produit (prix, nom...) dans le DOM
+    // Dispatcher les données de chaque produit dans le DOM
     .then(resultatAPI => {
       console.log(resultatAPI);
       for (let article in resultatAPI) {

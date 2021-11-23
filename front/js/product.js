@@ -5,7 +5,7 @@ const productCardImg = document.createElement("img");
 const productCardTitle = document.getElementById("title");
 const productCardPrice = document.getElementById("price");
 const productCardDes = document.getElementById("description");
-
+const quantity = document.querySelector('#quantity'); 
 window.addEventListener('DOMContentLoaded', (event) => {
 
 
@@ -21,26 +21,83 @@ window.addEventListener('DOMContentLoaded', (event) => {
       productCardTitle.innerHTML = resultatAPI.name;
       productCardPrice.innerHTML = resultatAPI.price;
       productCardDes.innerHTML = resultatAPI.description;
-      
-      
-      
-      for (let i = 0; i < resultatAPI.colors.length; i++) { 
-          let colorSelect = document.getElementById("colors")
-          let option = document.createElement("option");
-          option.innerText = resultatAPI.colors[i];
-          colorSelect.appendChild(option);
-        }
+    
+      for (let color of resultatAPI.colors){
+        let colorSelect = document.getElementById("colors")
+        let option = document.createElement("option");
+        option.text = color;
+        option.value = color;
+        resultatAPI.colors.innerHTML += colorSelect.appendChild(option);
+      }
+      // OTHER POSSIBILITY
+      // for (let i = 0; i < resultatAPI.colors.length; i++) { 
+      //     let colorSelect = document.getElementById("colors")
+      //     let option = document.createElement("option");
+      //     option.innerText = resultatAPI.colors[i];
+      //     colorSelect.appendChild(option);
+      //   }
 
+
+      //A APPRENDRE PAR COEUR ADDTOCART IN TO LOCALSTORAGE
+      const addCart = document.querySelector("#addToCart");
+      const listColor = document.querySelector('#colors');
+    
+    
+      addCart.addEventListener('click',(e) => {
+          // event.preventDefault();
+          
+          const quantityProduct = parseInt(quantity.value) ;
+          const colorProduct = listColor.value;
+         console.log(quantityProduct);
+        let cartAPI = {
+          id:resultatAPI._id , 
+          name:resultatAPI.name,
+          img:resultatAPI.imageUrl,
+          alt:resultatAPI.altTxt,
+          description:resultatAPI.description,
+          color:colorProduct, 
+          number_article: quantityProduct,
+          price: resultatAPI.price
+        }
+        let productOnStorage = JSON.parse(localStorage.getItem("product"));
+      //MESSAGE D ERREUR SELON CONDITION
+        if(cartAPI.color =="" || cartAPI.number_article=='0' || cartAPI.number_article > 100){
+          alert("Veuillez selectionnez une couleur et un nombre d'article")
+        }else{
+          if(!productOnStorage){
+            productOnStorage=[]
+          }
+        
+          for (let i=0; i< productOnStorage.length; i++){
+            if ((cartAPI.color === productOnStorage[i].color) && (cartAPI.id === productOnStorage[i].id)){
+              
+              productOnStorage[i].number_article += parseInt(cartAPI.number_article);
+              localStorage.setItem('product',JSON.stringify(productOnStorage))
+            }
+          } //for
+        
+          let check = productOnStorage.some( e => e.id === cartAPI.id && e.color === cartAPI.color)
+          console.log(check)
+          console.log(productOnStorage)
+        
+          if(!check){
+            productOnStorage.push(cartAPI)
+            localStorage.setItem('product', JSON.stringify(productOnStorage))
+          }
+        }// FIN CONDITION
       }) 
+     // FIN APPRENDRE PAR COEUR
+        ;
+      })
 
 // TEST LOCALSTORAGE
   // let ProduitEnregiste = JSON.parse(localStorage.getItem("produit"));
   // console.log(ProduitEnregiste); 
   
   
-  localStorage.setItem('name', parseFloat(document.getElementById('title').value))
-  localStorage.setItem('price', parseFloat(document.getElementById('price').value))
-  localStorage.setItem('color');
+  // localStorage.setItem('name', parseFloat(document.getElementById('title').value))
+  // localStorage.setItem('price', parseFloat(document.getElementById('price').value))
+  // localStorage.setItem('color');
 
 //    let name = document.querySelector("title").value;
 //    const panier = JSON.parse(localStorage.getItem("panier")) || []
