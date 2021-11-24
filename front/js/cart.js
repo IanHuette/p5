@@ -15,14 +15,14 @@ function updateArticlePriceTotal(article, price) {
 function updateOneArticlePriceTotal(id, price, quantity) {
     let displayValue = price * quantity;
     if(isNaN(displayValue)) displayValue = 0;
-    document.getElementById(id).innerHTML = displayValue;
+    document.getElementById(id).innerHTML = displayValue; // a quoi sert le id
 }
 
 function resetPriceAndArticleTotal(product) {
     let previousArticleTotal = parseInt(document.getElementById('totalQuantity').innerHTML);
     let previousPriceTotal = parseInt(document.getElementById('totalPrice').innerHTML);
     // on veut soustraire à ces anciennes valeurs pour le produit concerné => quantité et prix
-    let previousProductQuantity = parseInt(localStorage.getItem(`previousProductQuantity_${product.id}`));
+    let previousProductQuantity = parseInt(localStorage.getItem(`previousProductQuantity_${product.id}`)); 
     let resetArticleTotal =  previousArticleTotal - previousProductQuantity;
     let resetPriceTotal = previousPriceTotal - (parseInt(product.price) * previousProductQuantity);  
     return {
@@ -81,7 +81,7 @@ for (let [idx, product] of productsOnLocalStorage.entries()) {
     /**
      * on créé une paire clé/valeur unique pour la quantité initiale du produit
      * pour l'article itéré lors du chargement de la page;
-     * on sauvegarde ça dans le local storate
+     * on sauvegarde ça dans le local storage
      */
     localStorage.setItem(`previousProductQuantity_${product.id}`, product.number_article);
 
@@ -137,4 +137,48 @@ for (let [idx, product] of productsOnLocalStorage.entries()) {
 updateArticlePriceTotal(articleTotal, priceTotal);
 
 
-  
+
+
+//////////1- Récupérer et analyser les données saisies par l’utilisateur dans le formulaire
+//////////2- Constituer un objet contact (à partir des données du formulaire) et un tableau de produits
+    const submit = document.getElementById("order");
+    let inputFirstName = document.getElementById("firstName");
+    let inputLastName = document.getElementById("lastName");
+    let inputCity = document.getElementById("city");
+    let inputAdress = document.getElementById("address");
+    let inputMail = document.getElementById("email");
+    
+    
+    
+submit.addEventListener("click",(e) =>{
+let order = {
+   contact: {
+           firstName: inputFirstName.value,
+           lastName: inputLastName.value,
+           address: inputAdress.value,
+           city: inputCity.value,
+           email: inputMail.value
+         },
+         products: productsOnLocalStorage
+}
+localStorage.setItem("product", JSON.stringify(order))
+
+const options = {
+    method: "POST",
+    body: JSON.stringify(order),
+    headers: { "Content-Type": "application/json" },
+    };
+    fetch("http://localhost:3000/api/products/order", options)
+    .then(res => res.json())
+    .then((data) => {
+
+localStorage.setItem("orderId", data.orderId);
+// document.location.href = "confirmation.html";
+
+    })
+
+    })
+  ;
+
+
+
