@@ -90,29 +90,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         ;
       })
 
-// TEST LOCALSTORAGE
-  // let ProduitEnregiste = JSON.parse(localStorage.getItem("produit"));
-  // console.log(ProduitEnregiste); 
-  
-  
-  // localStorage.setItem('name', parseFloat(document.getElementById('title').value))
-  // localStorage.setItem('price', parseFloat(document.getElementById('price').value))
-  // localStorage.setItem('color');
-
-//    let name = document.querySelector("title").value;
-//    const panier = JSON.parse(localStorage.getItem("panier")) || []
-//    panier.push({
-//      name: JSON.stringify(productCardTitle.innerHTML)
-//    })
-//    window.localStorage.setItem("panier",JSON.stringify(panier))
-//   //  console.log(panier)
-//    console.log("Le produit a été ajouté au panier");
-//   //  showModal()
-// })
-
-
-
-
 
   // document.getElementById("quantity").addEventListener("change", e => {
   //   const userInput = e.target.value;

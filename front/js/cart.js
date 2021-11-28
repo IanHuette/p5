@@ -136,6 +136,22 @@ for (let [idx, product] of productsOnLocalStorage.entries()) {
 
 updateArticlePriceTotal(articleTotal, priceTotal);
 
+//Probleme: liste de produits n'est plus un objet mais un array
+//1-Essayer de changer un array en object
+
+// //TEST1 NON FONCTIONNEL
+// function toObject(productsOnLocalStorage) {
+//     var rv = {};
+//     for (var i = 0; i < productsOnLocalStorage.length; ++i)
+//       rv[i] = productsOnLocalStorage[i];
+//     return rv;
+//   }
+//   productsOnLocalStorage = toObject;
+
+//TEST2 non fonctionnel
+// const entries = [ ['0', 'a'], ['1', 'b'], ['2', 'c'] ];
+// const obj = productsOnLocalStorage.fromEntries(entries);
+// console.log(obj);
 
 
 
@@ -150,35 +166,33 @@ updateArticlePriceTotal(articleTotal, priceTotal);
     
     
     
-submit.addEventListener("click",(e) =>{
-let order = {
-   contact: {
-           firstName: inputFirstName.value,
-           lastName: inputLastName.value,
-           address: inputAdress.value,
-           city: inputCity.value,
-           email: inputMail.value
-         },
-         products: productsOnLocalStorage
-}
-localStorage.setItem("product", JSON.stringify(order))
+// submit.addEventListener("click",(e) =>{
+// let order = {
+//    contact: {
+//            firstName: inputFirstName.value,
+//            lastName: inputLastName.value,
+//            address: inputAdress.value,
+//            city: inputCity.value,
+//            email: inputMail.value
+//          },
+//          products: productsOnLocalStorage
+// };
+// localStorage.setItem("product", JSON.stringify(order));
 
-const options = {
-    method: "POST",
-    body: JSON.stringify(order),
-    headers: { "Content-Type": "application/json" },
-    };
-    fetch("http://localhost:3000/api/products/order", options)
-    .then(res => res.json())
-    .then((data) => {
+// const options = {
+//     method: "POST",
+//     body: JSON.stringify(order),
+//     headers: { "Content-Type": "application/json" },
+// };
 
-localStorage.setItem("orderId", data.orderId);
-// document.location.href = "confirmation.html";
+//     fetch("http://localhost:3000/api/products/order", options)
+//     .then(res => res.json())
+//     .then((data) => {
 
-    })
-
-    })
-  ;
+// localStorage.setItem("orderId", data.orderId);
+// // document.location.href = "confirmation.html";
+//     })
+// });
 
 
 
