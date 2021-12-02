@@ -1,13 +1,11 @@
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
-// let finalQuantityInput;
+let finalQuantityInput;
 const productCardImg = document.createElement("img");
 const productCardTitle = document.getElementById("title");
 const productCardPrice = document.getElementById("price");
 const productCardDes = document.getElementById("description");
 const quantity = document.querySelector('#quantity'); 
-window.addEventListener('DOMContentLoaded', (event) => {
-
 
   // On récupère uniquement le produit dont on a besoin via le paramètre dans la requête
   fetch(`http://localhost:3000/api/products/${id}`)
@@ -59,62 +57,35 @@ window.addEventListener('DOMContentLoaded', (event) => {
           number_article: quantityProduct,
           price: resultatAPI.price
         }
-        let productOnStorage = JSON.parse(localStorage.getItem("product"));
+        let productsOnLocalStorage = JSON.parse(localStorage.getItem("products"));
       //MESSAGE D ERREUR SELON CONDITION
         if(cartAPI.color =="" || cartAPI.number_article=='0' || cartAPI.number_article > 100){
           alert("Veuillez selectionnez une couleur et un nombre d'article")
         }else{
-          if(!productOnStorage){
-            productOnStorage=[]
+          if(!productsOnLocalStorage){
+            productsOnLocalStorage=[]
+            alert("Votre panier a été mis à jour")
           }
         
-          for (let i=0; i< productOnStorage.length; i++){
-            if ((cartAPI.color === productOnStorage[i].color) && (cartAPI.id === productOnStorage[i].id)){
+          for (let i=0; i< productsOnLocalStorage.length; i++){
+            if ((cartAPI.color === productsOnLocalStorage[i].color) && (cartAPI.id === productsOnLocalStorage[i].id)){
               
-              productOnStorage[i].number_article += parseInt(cartAPI.number_article);
-              localStorage.setItem('product',JSON.stringify(productOnStorage))
+              productsOnLocalStorage[i].number_article += parseInt(cartAPI.number_article);
+              localStorage.setItem('products',JSON.stringify(productsOnLocalStorage))
             }
           } //for
         
-          let check = productOnStorage.some( e => e.id === cartAPI.id && e.color === cartAPI.color)
+          let check = productsOnLocalStorage.some( e => e.id === cartAPI.id && e.color === cartAPI.color)
           console.log(check)
-          console.log(productOnStorage)
+          console.log(productsOnLocalStorage)
         
           if(!check){
-            productOnStorage.push(cartAPI)
-            localStorage.setItem('product', JSON.stringify(productOnStorage))
+            productsOnLocalStorage.push(cartAPI)
+            localStorage.setItem('products', JSON.stringify(productsOnLocalStorage))
           }
         }// FIN CONDITION
+        
       }) 
      // FIN APPRENDRE PAR COEUR
         ;
       })
-
-
-  // document.getElementById("quantity").addEventListener("change", e => {
-  //   const userInput = e.target.value;
-  //   // vérifier qu'il s'agit bien d'un nombre entier + vérifier que le nombre est positif + vérifier que la quantité n'excède pas 100
-  //   if (
-  //     Number.isInteger(userInput) 
-  //     && Number.parseInt(userInput) > 0
-  //     && Number.parseInt(userInput) <= 100
-  //   ) {
-  //     finalQuantityInput = userInput;
-  //   } else {
-  //     alert("WRONG INPUT")
-  //   }
-  // });
-
-
-
-
-
- 
-
-/**
- * 
- * quand on veut controler un string de manière poussée, on peut utiliser un regex,
- * par exemple on n'accepte que les emails de type user@openclassrooms.com
- * 
- */
-    })
